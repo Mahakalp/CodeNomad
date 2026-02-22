@@ -53,6 +53,9 @@ export const instanceMessages = {
   "instanceShell.connection.connecting": "Connecting...",
   "instanceShell.connection.disconnected": "Disconnected",
   "instanceShell.connection.unknown": "Unknown",
+  "instanceShell.connection.reconnecting": "Reconnecting ({count})...",
+  "instanceShell.connection.retry": "Retry",
+  "instanceShell.connection.retryHint": "Next retry in {seconds}s",
 
   "instanceWelcome.shortcuts.newSession": "New Session",
   "instanceWelcome.empty.title": "No Previous Sessions",

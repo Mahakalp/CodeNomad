@@ -226,6 +226,22 @@ class SSEManager {
   getStatuses() {
     return connectionStatus()
   }
+
+  getRetryCount() {
+    return serverEvents.getRetryCount()
+  }
+
+  getNextRetryDelay() {
+    return serverEvents.getNextRetryDelay()
+  }
+
+  getIsReconnecting() {
+    return serverEvents.getIsReconnecting()
+  }
+
+  reconnect() {
+    serverEvents.reconnect()
+  }
 }
 
 export const sseManager = new SSEManager()

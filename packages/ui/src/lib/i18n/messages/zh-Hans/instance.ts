@@ -53,6 +53,9 @@ export const instanceMessages = {
   "instanceShell.connection.connecting": "连接中...",
   "instanceShell.connection.disconnected": "已断开",
   "instanceShell.connection.unknown": "未知",
+  "instanceShell.connection.reconnecting": "重新连接中 ({count})...",
+  "instanceShell.connection.retry": "重试",
+  "instanceShell.connection.retryHint": "{seconds}秒后重试",
 
   "instanceWelcome.shortcuts.newSession": "新建会话",
   "instanceWelcome.empty.title": "没有历史会话",

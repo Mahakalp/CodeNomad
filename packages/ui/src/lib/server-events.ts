@@ -1,3 +1,4 @@
+import { createSignal } from "solid-js"
 import type { WorkspaceEventPayload, WorkspaceEventType } from "../../../server/src/api-types"
 import { serverApi } from "./api-client"
 import { getLogger } from "./logger"
@@ -14,6 +15,10 @@ function logSse(message: string, context?: Record<string, unknown>) {
   log.info(message)
 }
 
+const [retryCount, setRetryCount] = createSignal(0)
+const [nextRetryDelay, setNextRetryDelay] = createSignal(0)
+const [isReconnecting, setIsReconnecting] = createSignal(false)
+
 class ServerEvents {
   private handlers = new Map<WorkspaceEventType | "*", Set<(event: WorkspaceEventPayload) => void>>()
   private source: EventSource | null = null
@@ -23,15 +28,39 @@ class ServerEvents {
     this.connect()
   }
 
+  getRetryCount() {
+    return retryCount()
+  }
+
+  getNextRetryDelay() {
+    return nextRetryDelay()
+  }
+
+  getIsReconnecting() {
+    return isReconnecting()
+  }
+
+  reconnect() {
+    this.retryDelay = RETRY_BASE_DELAY
+    setRetryCount(0)
+    setNextRetryDelay(0)
+    setIsReconnecting(false)
+    this.connect()
+  }
+
   private connect() {
     if (this.source) {
       this.source.close()
     }
+    setIsReconnecting(true)
     logSse("Connecting to backend events stream")
     this.source = serverApi.connectEvents((event) => this.dispatch(event), () => this.scheduleReconnect())
     this.source.onopen = () => {
       logSse("Events stream connected")
       this.retryDelay = RETRY_BASE_DELAY
+      setRetryCount(0)
+      setNextRetryDelay(0)
+      setIsReconnecting(false)
     }
   }
 
@@ -40,7 +69,10 @@ class ServerEvents {
       this.source.close()
       this.source = null
     }
-    logSse("Events stream disconnected, scheduling reconnect", { delayMs: this.retryDelay })
+    const currentRetry = retryCount() + 1
+    setRetryCount(currentRetry)
+    setNextRetryDelay(this.retryDelay)
+    logSse("Events stream disconnected, scheduling reconnect", { delayMs: this.retryDelay, retryCount: currentRetry })
     setTimeout(() => {
       this.retryDelay = Math.min(this.retryDelay * 2, RETRY_MAX_DELAY)
       this.connect()

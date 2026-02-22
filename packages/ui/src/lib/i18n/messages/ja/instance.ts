@@ -53,6 +53,9 @@ export const instanceMessages = {
   "instanceShell.connection.connecting": "接続中...",
   "instanceShell.connection.disconnected": "切断",
   "instanceShell.connection.unknown": "不明",
+  "instanceShell.connection.reconnecting": "再接続中 ({count})...",
+  "instanceShell.connection.retry": "再試行",
+  "instanceShell.connection.retryHint": "{seconds}秒後に再試行",
 
   "instanceWelcome.shortcuts.newSession": "新しいセッション",
   "instanceWelcome.empty.title": "以前のセッションはありません",

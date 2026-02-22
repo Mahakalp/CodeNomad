@@ -179,6 +179,28 @@
   background-color: var(--status-error);
 }
 
+.status-indicator.disconnected .retry-button {
+  margin-left: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  background-color: var(--bg-color-button-primary);
+  color: var(--text-color-button-primary);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.status-indicator.disconnected .retry-button:hover {
+  background-color: var(--bg-color-button-primary-hover);
+}
+
+.status-indicator.disconnected .retry-countdown {
+  margin-left: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
 .status-indicator.session-status {
   --session-status-dot: var(--text-muted);
 }
